@@ -1,20 +1,50 @@
 {
-"mfa_enabled": "Boolean: Required: True if MFA is enabled, False if disabled.",
-"user": "String: Required: Unique identifier or username of the account associated with the authentication event.",
-"platform": "String: Required: Name of the platform this data came from e.g. GitHub, Shuffle, Okta. Write the name directly, not a variable.",
-"org": "String: Required: Name of the organization or tenant associated with the user account.",
+  "class_uid": 3002,
+  "class_name": "Authentication",
   
-"message": "String: Optional: Additional contextual or debug information related to the authentication event.",
-"role": "String: Optional: If known, explicitly specify the user’s role or privilege level (e.g., Admin, User, Viewer). This must be a fixed value, not a variable.",
-"logon_type_id": "Integer: Optional: Numeric identifier representing the type of logon (e.g., interactive, remote, service, batch).",
-"activity_id": "Integer: Optional: Identifier representing the specific authentication-related activity or event type.",
-"status": "String: Optional: Human-readable description indicating the outcome of the authentication attempt (e.g., Success, Failure).",
-"status_id": "Integer: Optional: Normalized numeric identifier representing the authentication status.(0 Unknown, 1 Success, 2 Failure, 99 Other)",
-"status_detail": "String: Optional: Additional explanation or context describing the meaning of the status_id value.",
-"confidence": "Integer: Optional: Confidence score (0–100) indicating the likelihood that the finding or event is accurate and valid.",
-"category_name": "String: Optional: Human-readable name of the category corresponding to category_uid.",
-"start_time": "Timestamp String: Optional: Time when the authentication event or session started, in ISO 8601 format.",
-"severity_id": "Integer: Optional: Numeric severity level indicating the risk associated with the authentication event.",
-"status_code": "String: Optional: System-generated code representing error or response status, useful for troubleshooting.",
-"users_last_session": "Timestamp String: Optional: Last recorded session time of the user in ISO 8601 format."
+  "category_uid": "Integer: Required: Numeric category UID as defined by OCSF.",
+  "is_mfa": "Boolean: Required: True if MFA is enabled, False if disabled.",
+  "user": {
+    "name": "String: Required: Unique identifier or username of the account associated with the authentication event.",
+    "uid": "String: Required: Unique identifier of the user in the source system."
+  },
+  "src_endpoint": "String: Optional: Name of the device this data came from e.g. Laptop, Mobile, Server. Write the name directly, not a variable.",
+  "org": {
+    "name": "String: Required: Name of the organization or tenant associated with the user account.",
+    "uid": "String: Optional: Unique identifier of the organization."
+  },
+
+  "message": "String: Optional: Additional contextual or debug information related to the authentication event.",
+  "actor": {
+    "user": {
+      "type": "String: Optional: If known, explicitly specify the user role or privilege level e.g. Admin, User, Viewer. This must be a fixed value, not a variable."
+    }
+  },
+  "logon_type_id": "Integer: Optional: Numeric identifier representing the type of logon e.g. interactive, remote, service, batch.(0:Unknown, 1: System, 2: Interactive, 3: Network, 4: Batch, 5: OS Service, 7: Unlock, 8:Network Cleartext, 9: New Credentials, 10: Remote Interactive, 11: Cached Interactive, 12: Cached Remote Interactive, 13: Cached Unlock, 99: Other)",
+  "activity_id": "Integer: Optional: Identifier representing the specific authentication-related activity or event type.(0: Unknown, 1: Logon, 2: Logoff, 3: Authentication Ticket, 4: Service Ticket Request, 5: Service Ticket Renew, 6: Preauthorisations, 7:Account Switch, 99:Other)",
+  "status": "String: Optional: Human-readable description indicating the outcome of the authentication attempt e.g. Success, Failure.",
+  "status_id": "Integer: Optional: Normalized numeric identifier representing the authentication status. 0 Unknown, 1 Success, 2 Failure, 99 Other.",
+  "status_detail": "String: Optional: Additional explanation or context describing the meaning of the status_id value.",
+  "confidence_id": "Integer: Optional: Confidence score 0-100 indicating the likelihood that the finding or event is accurate and valid.",
+  "category_name": "String: Optional: Human-readable name of the category corresponding to category_uid.",
+  "start_time": "String: Optional: Time when the authentication event or session started in ISO 8601 format.",
+  "severity_id": "Integer: Optional: Numeric severity level indicating the risk associated with the authentication event.",
+  "status_code": "String: Optional: System-generated code representing error or response status useful for troubleshooting.",
+  "last_seen_time": "String: Optional: Last recorded session time of the user in ISO 8601 format.",
+
+  "metadata": {
+    "version": "String: Required: OCSF schema version e.g. 1.0.0.",
+    "uid": "String: Optional: Original event UID in the source system. If no relevant ID exists keep blank.",
+    "product": "String: Required: Name of the platform this data came from e.g. GitHub, Shuffle, Okta. Write the name directly, not a variable.",
+    "logged_time": "String: Optional: Time the event was logged in ISO 8601 format.",
+    "extensions": {
+      "custom_attributes": {
+        "comments": "Array: Optional: Array of objects with fields author, timestamp, text representing analyst comments.",
+        "tlp": "Integer: Optional: Traffic Light Protocol classification. Default: 2.",
+        "is_new_logon": "Boolean: Optional: Indicates logon is from a device not seen before or a first time account logon.",
+        "custom_fields": "Object: Optional: Arbitrary key-value pairs for vendor-specific or workflow-specific fields.",
+        "assignee": "String: Optional: Email or identifier of the analyst or system responsible for this event."
+      }
+    }
+  }
 }
